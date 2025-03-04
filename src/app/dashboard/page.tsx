@@ -5,7 +5,7 @@ import { Favorites } from './ui/Favorites';
 import { Inbox } from './ui/Inbox';
 import { DefaultContent } from './ui/DefaultContent';
 
-export function DashboardContent({ activeItem }) {
+export function DashboardContent({ activeItem }: { activeItem: string }) {
   const renderContent = () => {
     switch (activeItem) {
       case 'Dashboard':
