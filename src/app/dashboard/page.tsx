@@ -5,11 +5,11 @@ import { Favorites } from './ui/Favorites';
 import { Inbox } from './ui/Inbox';
 import { DefaultContent } from './ui/DefaultContent';
 
-export function DashboardContent({ activeItem }: { activeItem: string }) {
+export function DashboardContent({ activeItem }: { activeItem: string}) {
   const renderContent = () => {
     switch (activeItem) {
       case 'Dashboard':
-        return <Dashboard />;
+        return <Dashboard/>;
       case 'Products':
         return <Products />;
       case 'Favorites':

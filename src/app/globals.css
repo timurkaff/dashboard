@@ -2,6 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-ul a{
-    height: 50px;
+.drawer-open .chart-container {
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: -1;
+  position: relative;
+}
+
+body.drawer-is-open .chart-container {
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: -1 !important;
+  position: relative;
+}
+
+.chart-container.drawer-active {
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: -1 !important;
+  position: relative;
+}
+
+.drawer-side {
+  z-index: 10 !important;
+}
+
+.drawer-overlay {
+  z-index: 5 !important;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  .drawer-side {
+    width: 80% !important;
+  }
+  
+  .drawer-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Уменьшаем размер шрифта для мобильных устройств */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Уменьшаем отступы для мобильных устройств */
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Улучшаем отображение таблиц на мобильных устройствах */
+  table {
+    font-size: 0.75rem;
+  }
+  
+  /* Улучшаем отображение графиков на мобильных устройствах */
+  .recharts-wrapper {
+    font-size: 0.75rem;
+  }
+  
+  /* Стили для поля поиска на мобильных устройствах */
+  input[placeholder="Поиск"], input[placeholder="Search"] {
+    max-width: 150px;
+    font-size: 0.75rem;
+  }
+  
+  /* Уменьшаем размер навигационной панели */
+  .navbar {
+    padding: 0.5rem !important;
+    min-height: auto !important;
+  }
 }
