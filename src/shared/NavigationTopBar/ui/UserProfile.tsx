@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import More from "@/assets/icons/More.svg"
 
 interface UserProfileProps {
@@ -32,10 +33,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ name, role, avatarUrl }) => {
   return (
     <div className={`flex ${isMobile ? 'gap-2' : 'gap-6'} items-center`}>
       <div className={`flex ${isMobile ? 'gap-2' : 'gap-5'}`}>
-        <img
+        <Image
           src={avatarUrl}
           alt={`${name || 'User'}'s avatar`}
-          className={`object-contain shrink-0 ${isMobile ? 'w-8' : 'w-11'} aspect-square`}
+          width={isMobile ? 32 : 44}
+          height={isMobile ? 32 : 44}
+          className="object-contain shrink-0"
         />
         {!isMobile && name && role && (
           <div className="flex flex-col my-auto">

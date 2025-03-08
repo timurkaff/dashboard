@@ -1,6 +1,5 @@
 'use client';
 import SidebarMenu from '@/shared/Sidebar_menu';
-import { DashboardContent } from './dashboard/page';
 import { useState, useEffect } from 'react';
 
 export default function Home() {
@@ -51,7 +50,10 @@ export default function Home() {
         onChange={(e) => handleDrawerChange(e.target.checked)}
       />
       <main>
-        <DashboardContent activeItem={activeItem} isDrawerOpen={isDrawerOpen} />
+        <div className="p-4">
+          <h1 className="text-2xl font-bold mb-4">{activeItem}</h1>
+          <p>Добро пожаловать в {activeItem}</p>
+        </div>
       </main>
     </div>
   );

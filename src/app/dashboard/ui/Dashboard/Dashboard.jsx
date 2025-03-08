@@ -2,9 +2,20 @@
 import { useState, useEffect } from 'react';
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area } from 'recharts';
 import { observer } from 'mobx-react-lite';
-import { salesStore } from '../../../lib/store/SalesStore';
+import { salesStore } from '../../../../lib/store/SalesStore';
 
 const months = salesStore.getMonths();
+
+/**
+ * @typedef {Object} DashboardProps
+ * @property {boolean} [isDrawerOpen] - Флаг, указывающий, открыто ли боковое меню
+ */
+
+/**
+ * Компонент Dashboard
+ * @param {DashboardProps} props - Свойства компонента
+ * @returns {JSX.Element}
+ */
 
 export const Dashboard = observer(({ isDrawerOpen }) => {
   const [selectedMonth, setSelectedMonth] = useState('January');

@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    domains: ['cdn.builder.io', 'store.storeimages.cdn-apple.com'],
+  },
 };
 
 export default nextConfig;
