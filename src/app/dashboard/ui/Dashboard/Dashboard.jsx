@@ -17,30 +17,34 @@ const months = salesStore.getMonths();
  * @returns {JSX.Element}
  */
 
-export const Dashboard = observer(({ isDrawerOpen }) => {
+export const Dashboard = observer(({ isDrawerOpen = false }) => {
   const [selectedMonth, setSelectedMonth] = useState('January');
   const [dealsSelectedMonth, setDealsSelectedMonth] = useState('January');
   const [isMobile, setIsMobile] = useState(false);
   const data = salesStore.data;
   const dealsData = salesStore.dealsData ? (salesStore.dealsData[dealsSelectedMonth] || []) : [];
 
-  // Определяем, является ли устройство мобильным
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
     
-    // Проверяем при загрузке
     checkIfMobile();
     
-    // Добавляем слушатель изменения размера окна
     window.addEventListener('resize', checkIfMobile);
     
-    // Очищаем слушатель при размонтировании
     return () => {
       window.removeEventListener('resize', checkIfMobile);
     };
   }, []);
+
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.classList.add('drawer-is-open');
+    } else {
+      document.body.classList.remove('drawer-is-open');
+    }
+  }, [isDrawerOpen]);
 
   const handleMonthChange = (e) => {
     const selectedValue = e.target.value;
@@ -60,14 +64,12 @@ export const Dashboard = observer(({ isDrawerOpen }) => {
     return status === 'Delivered' ? 'text-white bg-green-500' : 'text-white bg-red-500';
   };
 
-  // Добавляем класс к chart-container в зависимости от состояния isDrawerOpen
   const chartContainerClass = `chart-container ${isDrawerOpen ? 'drawer-active' : ''}`;
 
   return (
-    <div>
+    <div className="p-4 overflow-x-hidden">
       <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
       
-      {/* Статистические карточки - адаптивная сетка */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-7">
         <div className="bg-white p-4 rounded-lg shadow">
           <h2 className="mb-2 md:mb-4 text-sm md:text-base">Total User</h2>
@@ -103,7 +105,6 @@ export const Dashboard = observer(({ isDrawerOpen }) => {
         </div>
       </div>
 
-      {/* График продаж - адаптивный */}
       <div className="mt-4 md:mt-8 bg-white pt-3 md:pt-5 pb-3 md:pb-5 rounded-lg shadow">
         <div className="mb-2 md:mb-4 flex flex-col">
           <div className="flex flex-col sm:flex-row justify-between px-4 md:px-8 mt-2 md:mt-9 mb-2 md:mb-9 gap-2 sm:gap-0 sm:items-center">
@@ -122,7 +123,15 @@ export const Dashboard = observer(({ isDrawerOpen }) => {
             </select>
           </div>
           <div className="flex justify-center px-4 md:px-8">
-            <div className={chartContainerClass} style={{ width: '100%', height: isMobile ? '250px' : '400px' }}>
+            <div 
+              className={chartContainerClass} 
+              style={{ 
+                width: '100%', 
+                height: isMobile ? '250px' : '400px', 
+                position: 'relative', 
+                zIndex: isDrawerOpen ? 1 : 10 
+              }}
+            >
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart width={1200} height={isMobile ? 250 : 400} data={data} margin={{ 
                   top: 10, 

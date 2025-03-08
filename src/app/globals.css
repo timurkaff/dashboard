@@ -2,39 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Стили для графика при открытом drawer */
 .drawer-open .chart-container {
-  pointer-events: none;
-  opacity: 0.5;
-  z-index: -1;
-  position: relative;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
 }
 
 body.drawer-is-open .chart-container {
-  pointer-events: none;
-  opacity: 0.5;
-  z-index: -1 !important;
-  position: relative;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
 }
 
 .chart-container.drawer-active {
-  pointer-events: none;
-  opacity: 0.5;
-  z-index: -1 !important;
-  position: relative;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
 }
 
+/* Стили для drawer */
 .drawer-side {
-  z-index: 10 !important;
+  z-index: 1000 !important;
 }
 
 .drawer-overlay {
-  z-index: 5 !important;
+  z-index: 999 !important;
+}
+
+/* Полное скрытие скроллов при открытом drawer */
+body.drawer-is-open {
+  overflow: hidden !important;
+  padding-right: 0 !important; /* Предотвращает сдвиг контента */
+}
+
+.drawer-open {
+  overflow: hidden !important;
+}
+
+/* Скрываем все скроллбары при открытом drawer */
+body.drawer-is-open *::-webkit-scrollbar,
+.drawer-open *::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+body.drawer-is-open *,
+.drawer-open * {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE и Edge */
+}
+
+/* Стили для скроллбара внутри drawer */
+.drawer-side .overflow-y-auto::-webkit-scrollbar {
+  width: 0 !important;
+  display: none !important;
+}
+
+.drawer-side .overflow-y-auto {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE и Edge */
 }
 
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 768px) {
   .drawer-side {
-    width: 80% !important;
+    width: 100% !important;
   }
   
   .drawer-overlay {

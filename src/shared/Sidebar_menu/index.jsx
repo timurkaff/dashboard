@@ -7,19 +7,14 @@ import { useEffect, useState } from 'react';
 function SidebarMenu({ activeItem, setActiveItem }) {
   const [isMobile, setIsMobile] = useState(false);
 
-  // Определяем, является ли устройство мобильным
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
-    // Проверяем при загрузке
     checkIfMobile();
     
-    // Добавляем слушатель изменения размера окна
     window.addEventListener('resize', checkIfMobile);
     
-    // Очищаем слушатель при размонтировании
     return () => {
       window.removeEventListener('resize', checkIfMobile);
     };
@@ -55,12 +50,42 @@ function SidebarMenu({ activeItem, setActiveItem }) {
     { name: 'Logout', icon: null },
   ];
 
-  // Обеспечиваем, чтобы drawer-side имел высокий z-index
+  // Обеспечиваем, чтобы drawer-side имел высокий z-index и блокировал скролл
   useEffect(() => {
     const drawerSide = document.querySelector('.drawer-side');
+    const drawerCheckbox = document.getElementById('my-drawer');
+    
     if (drawerSide) {
       drawerSide.style.zIndex = '999';
     }
+    
+    // Обработчик изменения состояния drawer для блокировки скролла
+    const handleDrawerChange = () => {
+      if (drawerCheckbox && drawerCheckbox.checked) {
+        document.body.style.overflow = 'hidden';
+        // Добавляем класс для скрытия всех скроллбаров
+        document.documentElement.classList.add('hide-scrollbars');
+      } else {
+        document.body.style.overflow = '';
+        // Удаляем класс для скрытия всех скроллбаров
+        document.documentElement.classList.remove('hide-scrollbars');
+      }
+    };
+    
+    if (drawerCheckbox) {
+      drawerCheckbox.addEventListener('change', handleDrawerChange);
+      // Проверяем начальное состояние
+      if (drawerCheckbox.checked) {
+        document.body.style.overflow = 'hidden';
+        document.documentElement.classList.add('hide-scrollbars');
+      }
+    }
+    
+    return () => {
+      if (drawerCheckbox) {
+        drawerCheckbox.removeEventListener('change', handleDrawerChange);
+      }
+    };
   }, []);
 
   return (
@@ -71,14 +96,16 @@ function SidebarMenu({ activeItem, setActiveItem }) {
       </div>
       <div className="drawer-side" style={{ zIndex: 999 }}>
         <label htmlFor="my-drawer" aria-label="Close sidebar" className="drawer-overlay" style={{ zIndex: 998 }}></label>
-        <ul className={`menu ${isMobile ? 'w-[80%]' : 'w-[240px]'} overflow-auto bg-white`} style={{ zIndex: 999 }}>
+        <ul className={`menu ${isMobile ? 'w-full' : 'w-[240px]'} min-h-full bg-white`} style={{ zIndex: 999, overflowY: 'hidden' }}>
           <MenuHeader />
-          <MenuSection items={mainItems} menuItemClass={menuItemClass} setActiveItem={setActiveItem} />
-          <div className="divider my-2 md:my-4 border-gray-200"></div>
-          <div className="px-4 mb-1 md:mb-2 text-gray-500 text-xs md:text-sm font-semibold">PAGES</div>
-          <MenuSection items={pagesItems} menuItemClass={menuItemClass} setActiveItem={setActiveItem} />
-          <div className="divider my-2 md:my-4 border-gray-200"></div>
-          <MenuSection items={settingsItems} menuItemClass={menuItemClass} setActiveItem={setActiveItem} />
+          <div className="overflow-y-auto max-h-[calc(100vh-80px)]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <MenuSection items={mainItems} menuItemClass={menuItemClass} setActiveItem={setActiveItem} />
+            <div className="divider my-2 md:my-4 border-gray-200"></div>
+            <div className="px-4 mb-1 md:mb-2 text-gray-500 text-xs md:text-sm font-semibold">PAGES</div>
+            <MenuSection items={pagesItems} menuItemClass={menuItemClass} setActiveItem={setActiveItem} />
+            <div className="divider my-2 md:my-4 border-gray-200"></div>
+            <MenuSection items={settingsItems} menuItemClass={menuItemClass} setActiveItem={setActiveItem} />
+          </div>
         </ul>
       </div>
     </div>
